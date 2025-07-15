@@ -1,103 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Grupos Semanales</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" />
-</head>
-<body class="p-4 bg-dark text-white">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grupos Semanales</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body class="p-4 bg-dark text-white">
+    <h2 class="text-center mb-4">Distribución Técnica iD-Force</h2>
 
-  <h2 class="text-center mb-4">Distribución Técnica iD-Force</h2>
+    <div class="text-center mb-3">
+      <button onclick="generarSemana()" class="btn btn-primary">
+        Generar Nuevamente
+      </button>
+    </div>
 
-  <div class="text-center mb-3">
-    <button onclick="generarSemana()" class="btn btn-primary">Generar Nuevamente</button>
-  </div>
+    <table class="table table-dark table-bordered">
+      <thead>
+        <tr>
+          <th>Día</th>
+          <th>Fecha</th>
+          <th>Grupo A</th>
+          <th>Grupo B</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Lunes</th>
+          <td class="fecha" data-dia="1"></td>
+          <td class="lgroupa">---</td>
+          <td class="lgroupb">---</td>
+        </tr>
+        <tr>
+          <th>Martes</th>
+          <td class="fecha" data-dia="2"></td>
+          <td class="mgroupa">---</td>
+          <td class="mgroupb">---</td>
+        </tr>
+        <tr>
+          <th>Miércoles</th>
+          <td class="fecha" data-dia="3"></td>
+          <td class="migroupa">---</td>
+          <td class="migroupb">---</td>
+        </tr>
+        <tr>
+          <th>Jueves</th>
+          <td class="fecha" data-dia="4"></td>
+          <td class="jgroupa">---</td>
+          <td class="jgroupb">---</td>
+        </tr>
+        <tr>
+          <th>Viernes</th>
+          <td class="fecha" data-dia="5"></td>
+          <td class="vgroupa">---</td>
+          <td class="vgroupb">---</td>
+        </tr>
+        <tr>
+          <th>Sábado</th>
+          <td class="fecha" data-dia="6"></td>
+          <td class="sgroupa">---</td>
+          <td class="sgroupb">---</td>
+        </tr>
+      </tbody>
+    </table>
 
-  <table class="table table-dark table-bordered">
-    <thead>
-      <tr>
-        <th>Día</th>
-        <th>Fecha</th>
-        <th>Grupo A</th>
-        <th>Grupo B</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><th>Lunes</th><td class="fecha" data-dia="1"></td><td class="lgroupa">---</td><td class="lgroupb">---</td></tr>
-      <tr><th>Martes</th><td class="fecha" data-dia="2"></td><td class="mgroupa">---</td><td class="mgroupb">---</td></tr>
-      <tr><th>Miércoles</th><td class="fecha" data-dia="3"></td><td class="migroupa">---</td><td class="migroupb">---</td></tr>
-      <tr><th>Jueves</th><td class="fecha" data-dia="4"></td><td class="jgroupa">---</td><td class="jgroupb">---</td></tr>
-      <tr><th>Viernes</th><td class="fecha" data-dia="5"></td><td class="vgroupa">---</td><td class="vgroupb">---</td></tr>
-      <tr><th>Sábado</th><td class="fecha" data-dia="6"></td><td class="sgroupa">---</td><td class="sgroupb">---</td></tr>
-    </tbody>
-  </table>
-
- <script>
-    const personas = [
-      { id: 1, name: "Daniel" },
-      { id: 2, name: "Jonathan" },
-      { id: 3, name: "Nelson" },
-      { id: 4, name: "Ramsés" }
-    ];
-
-    // Lista de combinaciones fijas que no se repiten al día siguiente y se alternan cada dos días
-    const combinaciones = [
-      ["Daniel", "Jonathan"],
-      ["Nelson", "Ramsés"],
-      ["Daniel", "Nelson"],
-      ["Jonathan", "Ramsés"],
-      ["Daniel", "Ramsés"],
-      ["Jonathan", "Nelson"]
-    ];
-
-    function generarSemana() {
-      const dias = [
-        ["lgroupa", "lgroupb"],
-        ["mgroupa", "mgroupb"],
-        ["migroupa", "migroupb"],
-        ["jgroupa", "jgroupb"],
-        ["vgroupa", "vgroupb"],
-        ["sgroupa", "sgroupb"]
-      ];
-
-      // Usamos índices para tomar combinaciones de forma tal que se repitan cada 2 días como máximo
-      const indicesUsados = [];
-
-      for (let i = 0; i < dias.length; i++) {
-        let idx1, idx2, grupo1, grupo2;
-        do {
-          idx1 = Math.floor(Math.random() * combinaciones.length);
-          idx2 = Math.floor(Math.random() * combinaciones.length);
-          grupo1 = combinaciones[idx1];
-          grupo2 = combinaciones[idx2];
-        } while (
-          idx1 === idx2 ||
-          grupo1.some(nombre => grupo2.includes(nombre))
-        );
-
-        indicesUsados.push(idx1, idx2);
-
-        document.querySelector(`.${dias[i][0]}`).innerText = grupo1.join(" - ");
-        document.querySelector(`.${dias[i][1]}`).innerText = grupo2.join(" - ");
-      }
-
-      actualizarFechas();
-    }
-
-    function actualizarFechas() {
-      const hoy = new Date();
-      const lunes = new Date(hoy.setDate(hoy.getDate() - hoy.getDay() + 1));
-      document.querySelectorAll(".fecha").forEach(td => {
-        const offset = parseInt(td.dataset.dia);
-        const fecha = new Date(lunes);
-        fecha.setDate(lunes.getDate() + offset - 1);
-        td.innerText = fecha.toLocaleDateString("es-CO");
-      });
-    }
-
-    generarSemana();
-  </script>
-
-</body>
+    <script src="js/codigo.js"></script>
+  </body>
 </html>
